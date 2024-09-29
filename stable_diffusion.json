@@ -7123,5 +7123,41 @@
             "controlnet"
         ],
         "size_on_disk_bytes": 7105348824
+    },
+    "WAI-ANI-NSFW-PONYXL": {
+        "name": "WAI-ANI-NSFW-PONYXL",
+        "baseline": "stable_diffusion_xl",
+        "type": "ckpt",
+        "inpainting": false,
+        "description": "WAI-ANI-NSFW-PONYXL is a Pony finetuned for NSFW anime-style generations",
+        "version": "8.0",
+        "style": "anime",
+        "homepage": "https://civitai.com/models/404154",
+        "nsfw": true,
+        "download_all": false,
+        "requirements": {
+            "clip_skip": 2
+        },
+        "config": {
+            "files": [
+                {
+                    "path": "waiANINSFWPONYXL_v80.safetensors",
+                    "sha256sum": "C09F285811F11AECDB6D8BA73057C3670A30752B25B835C1C2F8EC919F8F40CD"
+                }
+            ],
+            "download": [
+                {
+                    "file_name": "waiANINSFWPONYXL_v80.safetensors",
+                    "file_path": "",
+                    "file_url": "https://civitai.com/api/download/models/827519?type=Model&format=SafeTensor&size=pruned&fp=fp16"
+                }
+            ]
+        },
+        "features_not_supported": [
+            "hires_fix",
+            "inpainting",
+            "controlnet"
+        ],
+        "size_on_disk_bytes": 6938040714
     }
 }
