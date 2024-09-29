@@ -18,20 +18,18 @@ jobs:
 
     - name: Get last release repository
       run: |
+        export ORIG_WORKING_DIR=$(pwd)
         cd current_release
         LAST_RELEASE_SHA=$(git rev-list --tags --skip=1 --max-count=1)
-        LAST_RELEASE_SHA_2=$(git rev-list --tags --skip=2 --max-count=1)
         LAST_RELEASE_TAG=$(git describe --tags $LAST_RELEASE_SHA)
-        LAST_RELEASE_TAG_2=$(git describe --tags $LAST_RELEASE_SHA)
         echo "LAST_RELEASE_TAG=$LAST_RELEASE_TAG" >> "$GITHUB_ENV"
         echo "LAST_RELEASE_SHA=$LAST_RELEASE_SHA" >> "$GITHUB_ENV"
-        echo "LAST_RELEASE_SHA_2=$LAST_RELEASE_SHA_2" >> "$GITHUB_ENV"
-        echo "LAST_RELEASE_TAG_2=$LAST_RELEASE_TAG_2" >> "$GITHUB_ENV"
+        cd $ORIG_WORKING_DIR
     
     - name: Checkout last release repository
       uses: actions/checkout@v2
       with:
-        ref: ${{ env.LAST_RELEASE_TAG }}
+        ref: ${{ env.LAST_RELEASE_SHA }}
         path: last_release
 
     - name: Set up Python
@@ -61,7 +59,7 @@ jobs:
 
     - name: Run comparison script
       run: |
-        python current_release/scripts/compare_release_to_main.py --release_path current_release/stable_diffusion.json --main_path last_release/stable_diffusion.json --main_hash $CURRENT_RELEASE_SHA --release_hash $LAST_RELEASE_SHA --output_dir changes/stable_diffusion/ --info_file_out ${{ env.INFO_FILE_OUT }}
+        python current_release/scripts/compare_pr_to_main.py --pr_path current_release/stable_diffusion.json --main_path last_release/stable_diffusion.json --main_hash ${{ github.sha }} --pr_hash $LAST_RELEASE_SHA --output_dir changes/stable_diffusion/ --info_file_out ${{ env.INFO_FILE_OUT }}
 
     - name: "Provide information about the release and other metadata"
       uses: tsickert/discord-webhook@v6.0.0
