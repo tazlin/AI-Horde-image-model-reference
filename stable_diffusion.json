@@ -6577,5 +6577,38 @@
             "controlnet"
         ],
         "size_on_disk_bytes": 6938040714
+    },
+    "Ultraspice": {
+        "name": "Ultraspice",
+        "baseline": "stable_diffusion_xl",
+        "type": "ckpt",
+        "inpainting": false,
+        "description": "Ultraspice is a highly realistic SDXL model.",
+        "version": "2.3",
+        "style": "realistic",
+        "homepage": "https://civitai.com/models/229392",
+        "nsfw": false,
+        "download_all": false,
+        "config": {
+            "files": [
+                {
+                    "path": "ultraspice_v23.safetensors",
+                    "sha256sum": "CFD51D0CB5107B0B2C3DB37BDE3FBF3CD569F0A1E0A2D8826D2C4DA2FCB57C09"
+                }
+            ],
+            "download": [
+                {
+                    "file_name": "ultraspice_v23.safetensors",
+                    "file_path": "",
+                    "file_url": "https://civitai.com/api/download/models/626054?type=Model&format=SafeTensor&size=pruned&fp=fp16"
+                }
+            ]
+        },
+        "features_not_supported": [
+            "hires_fix",
+            "inpainting",
+            "controlnet"
+        ],
+        "size_on_disk_bytes": 6939220250
     }
 }
