@@ -6589,6 +6589,9 @@
         "homepage": "https://civitai.com/models/229392",
         "nsfw": false,
         "download_all": false,
+        "requirements": {
+            "max_cfg_scale":2.5
+        },
         "config": {
             "files": [
                 {
