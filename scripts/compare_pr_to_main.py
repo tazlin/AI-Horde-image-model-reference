@@ -73,6 +73,7 @@ def compare_pr_to_main(
 
     return models_added, models_removed, models_changed
 
+
 def write_changes_to_dir(
     models_added: dict[str, RawLegacy_StableDiffusion_ModelRecord],
     models_removed: dict[str, RawLegacy_StableDiffusion_ModelRecord],
@@ -88,10 +89,7 @@ def write_changes_to_dir(
 
     with open(output_dir / "models_added.json", "w") as models_added_file:
         json.dump(
-            {
-                k: v.model_dump()
-                for k, v in models_added.items()
-            },
+            {k: v.model_dump() for k, v in models_added.items()},
             models_added_file,
             indent=4,
         )
@@ -99,10 +97,7 @@ def write_changes_to_dir(
 
     with open(output_dir / "models_removed.json", "w") as models_removed_file:
         json.dump(
-            {
-                k: v.model_dump()
-                for k, v in models_removed.items()
-            },
+            {k: v.model_dump() for k, v in models_removed.items()},
             models_removed_file,
             indent=4,
         )
@@ -110,10 +105,7 @@ def write_changes_to_dir(
 
     with open(output_dir / "models_changed.json", "w") as models_changed_file:
         json.dump(
-            {
-                k: v.model_dump()
-                for k, v in models_changed.items()
-            },
+            {k: v.model_dump() for k, v in models_changed.items()},
             models_changed_file,
             indent=4,
         )
@@ -178,7 +170,6 @@ def main():
 
     with open(info_file_out, "w") as file:
         file.write(output)
-
 
 
 if __name__ == "__main__":

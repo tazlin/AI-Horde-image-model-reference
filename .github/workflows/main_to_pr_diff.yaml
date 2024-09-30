@@ -26,6 +26,7 @@ jobs:
     - name: Checkout `main` repository
       uses: actions/checkout@v2
       with:
+        ref: main
         path: main
 
     - name: Checkout PR repository
@@ -48,7 +49,16 @@ jobs:
       run: |
         echo "MAIN_HASH=$(echo ${{ github.sha }} | cut -c1-8)" >> "$GITHUB_ENV"
         echo "PR_HASH=$(echo ${{ github.event.pull_request.base.sha }} | cut -c1-8)" >> "$GITHUB_ENV"
+
+    - name: Set output file name
+      run: |
         echo "INFO_FILE_OUT=$(echo pr_diff_${{ env.MAIN_HASH }}_${{ env.PR_HASH }}.txt)" >> "$GITHUB_ENV"
+
+    - name: Calculate and print SHA hash of each stable_diffusion.json file
+      run: |
+        echo "SHA of main/stable_diffusion.json: $(sha256sum main/stable_diffusion.json)"
+        echo "SHA of pr/stable_diffusion.json: $(sha256sum pr/stable_diffusion.json)"        
+
     - name: Run comparison script
       run: |
         python pr/scripts/compare_pr_to_main.py --pr_path pr/stable_diffusion.json --main_path main/stable_diffusion.json --main_hash ${{ github.sha }} --pr_hash ${{ github.event.pull_request.base.sha }} --output_dir changes/stable_diffusion/ --info_file_out ${{ env.INFO_FILE_OUT }}
