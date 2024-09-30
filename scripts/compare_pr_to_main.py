@@ -52,20 +52,14 @@ def compare_pr_to_main(
             pr_hash = None
             for _, pr_records in model.config.items():
                 for pr_record in pr_records:
-                    if (
-                        isinstance(pr_record, RawLegacy_FileRecord)
-                        and pr_record.sha256sum
-                    ):
+                    if isinstance(pr_record, RawLegacy_FileRecord) and pr_record.sha256sum:
                         pr_hash = pr_record.sha256sum
                         break
 
             main_hash = None
             for _, main_records in main_model_reference.root[model_name].config.items():
                 for main_record in main_records:
-                    if (
-                        isinstance(main_record, RawLegacy_FileRecord)
-                        and main_record.sha256sum
-                    ):
+                    if isinstance(main_record, RawLegacy_FileRecord) and main_record.sha256sum:
                         main_hash = main_record.sha256sum
                         break
 
@@ -142,43 +136,48 @@ def main():
     main_hash = args.main_hash
     output_dir = args.output_dir
 
-    models_added, models_removed, models_changed = compare_pr_to_main(
-        pr_path, main_path
-    )
+    models_added, models_removed, models_changed = compare_pr_to_main(pr_path, main_path)
     hash_compared = f"{main_hash[:8]}...{pr_hash[:8]}"
 
-    output = f"Models added from {hash_compared}:\n"
-    for model_name, model in models_added.items():
-        output += f"  {model_name} ({model.baseline})\n"
-        output += f"    {model.description}\n"
-        output += f"    nsfw: {model.nsfw}\n"
-        if model.inpainting:
-            output += f"    Inpainting: {model.inpainting}\n"
-        output += f"    {model.homepage}\n"
+    output = ""
+    info_file_out = args.info_file_out or f"pr_diff_{hash_compared}.txt"
 
-    output += "Models removed:\n"
-    for model_name, model in models_removed.items():
-        output += f"  {model_name}\n"
+    if len(models_added) == 0 and len(models_removed) == 0 and len(models_changed) == 0:
+        output = f"No changes found between {hash_compared}"
+    else:
+        output = f"Models added from {hash_compared}:\n"
+        for model_name, model in models_added.items():
+            output += f"  {model_name} ({model.baseline})\n"
+            output += f"    {model.description}\n"
+            output += f"    nsfw: {model.nsfw}\n"
+            if model.inpainting:
+                output += f"    Inpainting: {model.inpainting}\n"
+            output += f"    {model.homepage}\n"
 
-    output += "Models changed:\n"
-    for model_name, model in models_changed.items():
-        output += f"  {model_name}\n"
+        output += "Models removed:\n"
+        for model_name, model in models_removed.items():
+            output += f"  {model_name}\n"
+
+        output += "Models changed:\n"
+        for model_name, model in models_changed.items():
+            output += f"  {model_name}\n"
+
+        if output_dir:
+            if not pr_hash or not main_hash:
+                raise ValueError("Must provide both pr_hash and main_hash to write changes to disk")
+            write_changes_to_dir(
+                models_added,
+                models_removed,
+                models_changed,
+                output_dir,
+                pr_hash,
+                main_hash,
+            )
 
     print(output)
 
-    info_file_out = args.info_file_out or f"pr_diff_{hash_compared}.txt"
-
     with open(info_file_out, "w") as file:
         file.write(output)
-
-    if output_dir:
-        if not pr_hash or not main_hash:
-            raise ValueError(
-                "Must provide both pr_hash and main_hash to write changes to disk"
-            )
-        write_changes_to_dir(
-            models_added, models_removed, models_changed, output_dir, pr_hash, main_hash
-        )
 
 
 
