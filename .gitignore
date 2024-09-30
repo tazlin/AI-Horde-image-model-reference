@@ -171,3 +171,5 @@ cython_debug/
 *.webp
 *.png
 *.jpg
+pr_diff_*
+changes/
