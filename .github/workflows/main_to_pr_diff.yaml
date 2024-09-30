@@ -63,6 +63,12 @@ jobs:
       run: |
         python pr/scripts/compare_pr_to_main.py --pr_path pr/stable_diffusion.json --main_path main/stable_diffusion.json --main_hash ${{ github.sha }} --pr_hash ${{ github.event.pull_request.base.sha }} --output_dir changes/stable_diffusion/ --info_file_out ${{ env.INFO_FILE_OUT }}
 
+    - name: "Provide information about who made the PR and other metadata"
+      uses: tsickert/discord-webhook@v6.0.0
+      with:
+        webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        content: "PR by ${{ github.actor }}: ${{ github.event.pull_request.title }} - ${{ github.event.pull_request.html_url }}"
+
     - name: "Inform with Discord Webhook"
       uses: tsickert/discord-webhook@v6.0.0
       with:

@@ -139,20 +139,22 @@ def main():
     else:
         output = f"Models added from {hash_compared}:\n"
         for model_name, model in models_added.items():
-            output += f"  {model_name} ({model.baseline})\n"
+            output += f"  + {model_name} v{model.version} ({model.baseline})\n"
             output += f"    {model.description}\n"
             output += f"    nsfw: {model.nsfw}\n"
             if model.inpainting:
                 output += f"    Inpainting: {model.inpainting}\n"
             output += f"    {model.homepage}\n"
+            output += f"    {model.tags}\n"
+            output += "\n"
 
         output += "Models removed:\n"
         for model_name, model in models_removed.items():
-            output += f"  {model_name}\n"
+            output += f"  - {model_name}\n"
 
         output += "Models changed:\n"
         for model_name, model in models_changed.items():
-            output += f"  {model_name}\n"
+            output += f"  ~ {model_name}\n"
 
         if output_dir:
             if not pr_hash or not main_hash:
