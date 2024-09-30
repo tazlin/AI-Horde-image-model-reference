@@ -74,5 +74,3 @@ jobs:
       with:
           webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
           filename: ${{ env.INFO_FILE_OUT }}
-
-
