@@ -50,7 +50,7 @@ jobs:
         echo "INFO_FILE_OUT=$(echo pr_diff_${{ env.MAIN_HASH }}_${{ env.PR_HASH }}.txt)" >> "$GITHUB_ENV"
     - name: Run comparison script
       run: |
-        python pr/scripts/compare_pr_to_main.py --pr_path pr/changes/stable_diffusion/stable_diffusion.json --main_path main/stable_diffusion.json --main_hash ${{ github.event.pull_request.base.sha }} --pr_hash ${{ github.sha }} --output_dir changes/stable_diffusion/ --info_file_out ${{ env.INFO_FILE_OUT }}
+        python pr/scripts/compare_pr_to_main.py --pr_path pr/stable_diffusion.json --main_path main/stable_diffusion.json --main_hash ${{ github.event.pull_request.base.sha }} --pr_hash ${{ github.sha }} --output_dir changes/stable_diffusion/ --info_file_out ${{ env.INFO_FILE_OUT }}
 
     - name: "Inform with Discord Webhook"
       uses: tsickert/discord-webhook@v6.0.0
