@@ -57,7 +57,7 @@ jobs:
     - name: Calculate and print SHA hash of each stable_diffusion.json file
       run: |
         echo "SHA of main/stable_diffusion.json: $(sha256sum main/stable_diffusion.json)"
-        echo "SHA of pr/stable_diffusion.json: $(sha256sum pr/stable_diffusion.json)"        
+        echo "SHA of pr/stable_diffusion.json: $(sha256sum pr/stable_diffusion.json)"
 
     - name: Run comparison script
       run: |
