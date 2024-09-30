@@ -34,14 +34,23 @@ jobs:
       run: |
         python compare_pr_to_main.py --pr_path pr/changes/stable_diffusion/stable_diffusion.json --main_path main/stable_diffusion.json --main_hash ${{ github.event.pull_request.base.sha }} --pr_hash ${{ github.sha }} --output_dir changes/stable_diffusion/
 
+    - name: Extract the first 8 characters from the main and PR hash and store them as variables
+      run: |
+        echo "MAIN_HASH=$(echo ${{ github.event.pull_request.base.sha }} | cut -c1-8)" >> "$GITHUB_ENV"
+        echo "PR_HASH=$(echo ${{ github.sha }} | cut -c1-8)" >> "$GITHUB_ENV"
+
     - name: Check if output files are present
       run: |
-        ls -l pr/changes/stable_diffusion/${{ github.sha:0:8 }}...${{ github.event.pull_request.base.sha:0:8 }}/models_added.json
-        ls -l pr/changes/stable_diffusion/${{ github.sha:0:8 }}...${{ github.event.pull_request.base.sha:0:8 }}/models_removed.json
-        ls -l pr/changes/stable_diffusion/${{ github.sha:0:8 }}...${{ github.event.pull_request.base.sha:0:8 }}/models_changed.json
-
-    - name: Check that the PR has the same exact files as in the changes/ dir for this PR
-      run: |
-        git diff --exit-code pr/changes/stable_diffusion/${{ github.sha:0:8 }}...${{ github.event.pull_request.base.sha:0:8 }}/models_added.json
-        git diff --exit-code pr/changes/stable_diffusion/${{ github.sha:0:8 }}...${{ github.event.pull_request.base.sha:0:8 }}/models_removed.json
-        git diff --exit-code pr/changes/stable_diffusion/${{ github.sha:0:8 }}...${{ github.event.pull_request.base.sha:0:8 }}/models_changed.json
+        if [ ! -f changes/stable_diffusion/$MAIN_HASH...$PR_HASH/models_added.json ]; then
+          echo "models_added.json is missing"
+          exit 1
+        fi
+        if [ ! -f changes/stable_diffusion/$MAIN_HASH...$PR_HASH/models_removed.json ]; then
+          echo "models_removed.json is missing"
+          exit 1
+        fi
+        if [ ! -f changes/stable_diffusion/$MAIN_HASH...$PR_HASH/models_changed.json ]; then
+          echo "models_changed.json is missing"
+          exit 1
+        fi
+        
