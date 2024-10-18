@@ -15,12 +15,17 @@ jobs:
         ref: ${{ github.event.release.tag_name }}
         path: current_release
 
-    - name: Checkout last release repository
+    - name: Get last release repository
       run: |
         cd current_release
         LAST_RELEASE_TAG=$(git describe --tags `git rev-list --tags --skip=1 --max-count=1`)
-        cd ..
-        git clone --branch $LAST_RELEASE_TAG ${{ github.repository }} last_release
+        echo "LAST_RELEASE_TAG=$LAST_RELEASE_TAG" >> "$GITHUB_ENV"
+    
+    - name: Checkout last release repository
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ env.LAST_RELEASE_TAG }}
+        path: last_release
 
     - name: Set up Python
       uses: actions/setup-python@v2
