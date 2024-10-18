@@ -17,7 +17,9 @@ jobs:
 
     - name: Checkout last release repository
       run: |
+        cd current_release
         LAST_RELEASE_TAG=$(git describe --tags `git rev-list --tags --skip=1 --max-count=1`)
+        cd ..
         git clone --branch $LAST_RELEASE_TAG ${{ github.repository }} last_release
 
     - name: Set up Python
