@@ -5823,7 +5823,8 @@
                 {
                     "file_name": "newERANewEstheticRetro_newErav50NAIEpsilon.safetensors",
                     "file_path": "",
-                    "file_url": "https://civitai.com/api/download/models/1502081?type=Model&format=SafeTensor&size=full&fp=bf16"
+                    "file_url": "https://huggingface.co/mirroring/horde_models/resolve/main/newERANewEstheticRetro_newErav50NAIEpsilon.safetensors",
+                    "sha256sum": "0C623BCE42E5CA31BE648350BC764F4861D7F9A9738C6F9995472E0813A57AC6"
                 }
             ]
         },
